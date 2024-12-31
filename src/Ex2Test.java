@@ -43,7 +43,7 @@ class Ex2Test {
 
     @org.junit.jupiter.api.Test
     void isAritmaticaction() {
-        String[]isOk={"2+2","5*5","(54)","85*4+3"};
+        String[]isOk={"2+2","5*5","(54)","85*4+3","9*5+2*6"};
         for (int i =0;i< isOk.length;i=i+1){
             assertTrue(Ex2.isAritmaticaction(isOk[i]));
         }
