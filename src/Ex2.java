@@ -220,22 +220,24 @@ public class Ex2 {
         for (int i = 0; i < Values.size(); i = i + 1) {
             if (Values.get(i) == 0.0 && Character.isDigit(form.charAt(i))) {
                 num = num + form.charAt(i) + "";
-            } else if ("/*-+()".contains(form.charAt(i)+ "")&& i!=0 && num!="") {
-                 Numbers[j] = num;
-                 num = "";
-                 j=j+1;
-            }}
-            if (!num.isEmpty()) {
+            } else if ("/*-+()".contains(form.charAt(i) + "") && i != 0 && num != "") {
                 Numbers[j] = num;
-                j=j+1;
-                num="";
+                num = "";
+                j = j + 1;
             }
-
-            return Numbers;
         }
+        if (!num.isEmpty()) {
+            Numbers[j] = num;
+            j = j + 1;
+            num = "";
+        }
+
+        return Numbers;
+    }
 
     /**
      * there is aproblame in the '-' char cuse he is doing the cuaculation wrong !!!!
+     *
      * @param form
      * @return
      */
@@ -245,9 +247,9 @@ public class Ex2 {
 
         // 2. להפיק את המספרים
         String[] numbers = NumbersOnlyByOrder(form, operatorValues);
-        List<String> NumbersNewList=new ArrayList<>(0);
+        List<String> NumbersNewList = new ArrayList<>(0);
 
-        for(int i=0;i< numbers.length;i=i+1) {
+        for (int i = 0; i < numbers.length; i = i + 1) {
             NumbersNewList.add(numbers[i]);
         }
 
@@ -261,7 +263,7 @@ public class Ex2 {
 
         List<Double> operatorValuesOnly = giveOpValue(form);
         for (int i = operatorValuesOnly.size() - 1; i >= 0; i--) {
-            if (operatorValuesOnly.get(i)==0.0||operatorValuesOnly.get(i)==-1.0){
+            if (operatorValuesOnly.get(i) == 0.0 || operatorValuesOnly.get(i) == -1.0) {
                 operatorValuesOnly.remove(i);
             }
         }
@@ -272,7 +274,7 @@ public class Ex2 {
             double maxValue = -1.0;
             int maxIndex = -1;
             int maxValueOfFullChars = 0;
-             int trackOfAntiOp=1;
+            int trackOfAntiOp = 1;
 
             List<Double> operatorValuesOnlyIndexs = giveOpValue(form);
             for (int i = 0; i < operatorValuesOnly.size(); i++) {
@@ -284,18 +286,17 @@ public class Ex2 {
             }
 
 
+            List<Double> sub = operatorValues.subList(0, maxIndex);
 
-           List<Double> sub= operatorValues.subList(0,maxIndex);
-
-            for (int i=0;i<sub.size();i=i+1){
-                if(sub.get(i)==-1){
-                    trackOfAntiOp=trackOfAntiOp;
+            for (int i = 0; i < sub.size(); i = i + 1) {
+                if (sub.get(i) == -1) {
+                    trackOfAntiOp = trackOfAntiOp;
                 }
             }
             // לבצע את החישוב על פי האופרטור
-            if(maxIndex>=0&&NumOfOp>0) {
-                double num1 = Double.parseDouble(NumbersNewList.get(maxIndex ));
-                double num2 = Double.parseDouble(NumbersNewList.get(maxIndex  + 1));
+            if (maxIndex >= 0 && NumOfOp > 0) {
+                double num1 = Double.parseDouble(NumbersNewList.get(maxIndex));
+                double num2 = Double.parseDouble(NumbersNewList.get(maxIndex + 1));
                 double result = 0.0;
                 double ansMaxValue = maxValue % 1;
                 ansMaxValue = Math.round(ansMaxValue * 10.0) / 10.0;
@@ -315,22 +316,37 @@ public class Ex2 {
 
 
                 // עדכון המספרים במערך
-                NumbersNewList.set(maxIndex , String.valueOf(result));
+                NumbersNewList.set(maxIndex, String.valueOf(result));
                 NumbersNewList.remove(maxIndex + 1);
             }// להזיז את כל האיברים אחריו במערך numbers
-            int track=0;
-            if(trackOfAntiOp>0){
-                track=trackOfAntiOp;
+            int track = 0;
+            if (trackOfAntiOp > 0) {
+                track = trackOfAntiOp;
             }
             // עדכון operatorValues
             operatorValues.remove(maxIndex);
             // עדכון מספר האופרטורים
             NumOfOp--;
-                trackOfAntiOp=0;
-                operatorValuesOnly.remove(maxIndex);
+            trackOfAntiOp = 0;
+            operatorValuesOnly.remove(maxIndex);
         }
-            // בשלב הזה נשאר רק מספר אחד במערך, זה התוצאה
-            return Double.parseDouble(NumbersNewList.get(0));
+        // בשלב הזה נשאר רק מספר אחד במערך, זה התוצאה
+        return Double.parseDouble(NumbersNewList.get(0));
+
+    }
+
+    public static int ValueOfLetters(char c) {
+        int castingToInt=0;
+        if(Character.isLetter(c)){
+            castingToInt=c;
+        if (castingToInt<91&&castingToInt>64){
+            castingToInt=castingToInt-65;
+        } else if (castingToInt<123&&castingToInt>96) {
+            castingToInt=castingToInt-97;
+        }
+        }
+
+       return castingToInt;
 
     }
 }

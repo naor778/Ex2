@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -22,6 +23,9 @@ public class Main {
         List<Double> b = Ex2.giveOpValue(form);
         String Numbers="(5+5)*88+5+6+7";
         double asdas=0.3333;
+        char hi ='z';
+         int asada=Ex2.ValueOfLetters(hi);
+        System.out.println(asada);
     }
 
 
