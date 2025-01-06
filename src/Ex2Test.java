@@ -12,7 +12,7 @@ class Ex2Test {
         }
         String need = "75++-";
         assertFalse(Ex2.isNumber(need));
-        String[] needToFail = {"++62))", ")50", "75++-", "-*150", "2*-3", "85*4+3bla","(50+)","((50)+)"};
+        String[] needToFail = {"++62))", ")50", "75++-", "-*150", "2*-3", "85*4+3bla","(50+)","((50)+)",""};
         for (int j = 0; j < needToFail.length; j = j + 1) {
             assertFalse(Ex2.isNumber(needToFail[j]));
         }
@@ -69,13 +69,21 @@ class Ex2Test {
 
     @Test
     void isForm() {
-        String[] isOk = {"=50", "=(50)", "=50+80", "=(3+4)*3+2*1"};
+        String[] isOk = {"=50", "=(50)", "=50+80", "=(3+4)*3+2*1","=((5+5)*(5*5)+50)","=(0.2)"};
         for (int i = 0; i < isOk.length; i = i + 1) {
             assertTrue(Ex2.isForm(isOk[i]));
         }
-        String[] isNotOk = {"=50=", "=(50+)", "50+80jhk", "(3+4)*3+2*1",};
+        String[] isNotOk = {"=50=", "=(50+)", "50+80jhk", "(3+4)*3+2*1","=0..2","=asda"};
         for (int j = 0; j < isNotOk.length; j = j + 1) {
             assertFalse(Ex2.isForm(isNotOk[j]));
+        }
+    }
+    @Test
+    void calculateFormula(){
+        String[] try1 = {"2*16-8/4","(6+3)*2","6+6","2+2","2-2","2-0","8/4","2*6"};
+        double[] ansOfTry1={30.0,18.0,12.0,4.0,0.0,2.0,2.0,12.0};
+        for(int i=0;i< try1.length;i=i+1) {
+            assertEquals(ansOfTry1[i], Ex2.calculateFormula(try1[i]));
         }
     }
 }
