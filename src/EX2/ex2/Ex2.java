@@ -16,6 +16,15 @@ public class Ex2 {
             }
             return ans;
         }
+        public static boolean isOnlyNumber(String c){
+            boolean ans=false;
+            double a=Double.parseDouble(c);
+            if ("0123456789".contains(c)){
+                ans=true;
+            }
+            return ans;
+        }
+
 
         //chack if string of ')' ans '(' is ok in the ammout
         public static int valueOfChar(String num) {
