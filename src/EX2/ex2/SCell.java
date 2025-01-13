@@ -61,7 +61,6 @@ public class SCell implements Cell {
         System.out.println("Updating cell at [" + x + "][" + y + "] with value: " + this.line);
         AllCell[x][y]=this.line;
         AllCell2[x][y] = this._DataFirst;
-        /////////////////////
     }
 
     @Override
