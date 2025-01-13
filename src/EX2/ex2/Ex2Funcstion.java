@@ -1,10 +1,15 @@
-import EX2.ex2.Ex2Funcstion;
+package EX2.ex2;
+
+import com.sun.jdi.Value;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Ex2 {
+import static EX2.ex2.Ex2Utils.EMPTY_CELL;
+import static EX2.ex2.Ex2Utils.ERR;
+
+public class Ex2Funcstion {
     // chack if the string is in the ok formet
     public static boolean isNumber(String num) {
         boolean ans = true;
@@ -17,6 +22,18 @@ public class Ex2 {
         }
         return ans;
     }
+
+    public static boolean isOnlyNumber(String c) {
+        boolean ans = false;
+        try {
+            Double.parseDouble(c);
+            ans = true;
+        } catch (NumberFormatException e) {
+            ans = false;
+        }
+        return ans;
+    }
+
 
     //chack if string of ')' ans '(' is ok in the ammout
     public static int valueOfChar(String num) {
@@ -81,7 +98,7 @@ public class Ex2 {
                 if (i == num.length() - 1) {
                     return false;
                 }
-                if (!"0123456789(.".contains(num.charAt(i + 1) + "")) {
+                if (!"0123456789(".contains(num.charAt(i + 1) + "")) {
                     return false;
                 }
                 if (i >= 1 && num.charAt(i - 1) == '(') {
@@ -123,36 +140,12 @@ public class Ex2 {
         }
         String number = num.substring(1);
 
-        if (isNumber(number) == true && num.startsWith("=")) {
+        if ((isNumber(number) == true && num.startsWith("=")) || num.startsWith("=")) {
             ans = true;
         }
-
-        return ans;
-    }
-
-    public static String[] PartofStrings(String num) {
-        int a = 0;
-        for (int i = 0; i < num.length(); i = i + 1) {
-            if ("-*/+".contains(num.charAt(i) + "")) {
-                a = a + 1;
-            }
+        if ("=".contains(number) || Ex2Funcstion.isAritmaticaction(number) == false || Ex2Funcstion.isNumber(number) == false || Ex2Funcstion.isText(number) == true) {
+            ans = false;
         }
-        String[] ans = new String[a];
-        for (int j = 0; j < num.length(); j = j + 1) {
-            if ("(".contains(num.charAt(j) + "")) {
-                String z = num.substring('(' + 1, ')' - 1);
-                if ("()".contains(z)) {
-
-                }
-            }
-
-        }
-        return ans;
-    }
-
-    public static Double computeForm(String form) {
-        double ans = 0;
-
 
         return ans;
     }
@@ -216,7 +209,7 @@ public class Ex2 {
 
     public static String[] NumbersOnlyByOrder(String form, List<Double> Values) {
         int j = 0;
-        int ans = Ex2.numberOfOperators(Values);
+        int ans = Ex2Funcstion.numberOfOperators(Values);
         String[] Numbers = new String[ans + 1];
         String num = "";
         for (int i = 0; i < Values.size(); i = i + 1) {
@@ -244,13 +237,11 @@ public class Ex2 {
      * @return
      */
     public static String calculateFormula(String form) {
-        // 1. להפיק את הערכים של האופרטורים
-        if(form.startsWith("=")){
+        if (form.startsWith("=")){
             form=form.substring(1);
         }
         List<Double> operatorValues = giveOpValue(form);
 
-        // 2. להפיק את המספרים
         String[] numbers = NumbersOnlyByOrder(form, operatorValues);
         List<String> NumbersNewList = new ArrayList<>(0);
 
@@ -264,7 +255,7 @@ public class Ex2 {
             }
         }
         int h = 0;
-        int NumOfOp = Ex2.numberOfOperators(operatorValues);
+        int NumOfOp = Ex2Funcstion.numberOfOperators(operatorValues);
 
         List<Double> operatorValuesOnly = giveOpValue(form);
         for (int i = operatorValuesOnly.size() - 1; i >= 0; i--) {
@@ -272,9 +263,7 @@ public class Ex2 {
                 operatorValuesOnly.remove(i);
             }
         }
-        // 3. חישוב לפי סדר העדיפות של האופרטורים
         while (NumOfOp > 0) {
-            // לחפש את האופרטור עם הערך הגבוה ביותר
             double maxValueRaound = 0;
             double maxValue = -1.0;
             int maxIndex = -1;
@@ -298,45 +287,48 @@ public class Ex2 {
                     trackOfAntiOp = trackOfAntiOp;
                 }
             }
-            // לבצע את החישוב על פי האופרטור
             if (maxIndex >= 0 && NumOfOp > 0) {
                 double num1 = Double.parseDouble(NumbersNewList.get(maxIndex));
                 double num2 = Double.parseDouble(NumbersNewList.get(maxIndex + 1));
                 double result = 0.0;
                 double ansMaxValue = maxValue % 1;
                 ansMaxValue = Math.round(ansMaxValue * 10.0) / 10.0;
-                // אם האופרטור הוא * או /
                 if (ansMaxValue == 0.7) {//chack if its maxValue is 0.7 its need to do the * operator
                     result = num1 * num2;
                 } else if (ansMaxValue == 0.6) {
                     result = num1 / num2;
-                }
-
-                // אם האופרטור הוא + או -
-                else if (ansMaxValue == 0.3) {
+                } else if (ansMaxValue == 0.3) {
                     result = num1 + num2;
                 } else if (ansMaxValue == 0.4) {
                     result = num1 - num2;
                 }
 
 
-                // עדכון המספרים במערך
                 NumbersNewList.set(maxIndex, String.valueOf(result));
                 NumbersNewList.remove(maxIndex + 1);
-            }// להזיז את כל האיברים אחריו במערך numbers
+            }
             int track = 0;
             if (trackOfAntiOp > 0) {
                 track = trackOfAntiOp;
             }
-            // עדכון operatorValues
+
             operatorValues.remove(maxIndex);
-            // עדכון מספר האופרטורים
+
             NumOfOp--;
             trackOfAntiOp = 0;
             operatorValuesOnly.remove(maxIndex);
         }
-        String ans=Double.parseDouble(NumbersNewList.get(0))+"";
-        return ans;
+        try {
+            String ans=Double.parseDouble(NumbersNewList.get(0))+"";
+            return ans;
+        }catch (NumberFormatException e) {
+            String ans = "";
+            if (ans == "" || ans == null) {
+                ans = Ex2Utils.EMPTY_CELL;
+            }
+        }
+       String ans=Ex2Utils.ERR_FORM;
+return ans;
     }
 
     public static int ValueOfLetters(char c) {
@@ -354,23 +346,43 @@ public class Ex2 {
 
     }
 
+    public static char intToLetters(int x) {
+        if (x >= 0 && x <= 25) {
+            return (char) ('A' + x);
+        } else {
+            throw new IllegalArgumentException("the Number must be between 0-25");
+        }
+    }
 
-    public static List<String> ans(String s) {
-        // 1. להפיק את הערכים של האופרטורים
+    /**
+     * Esy just used what i allready worked hard on in cuaculteform funcstion
+     *
+     * @param s
+     * @return
+     */
+    public static List<String> BringListOfAllNumbersAndCord(String s) {
         List<Double> operatorValues = giveOpValue(s);
 
-        // 2. להפיק את המספרים
         String[] numbers = NumbersOnlyByOrder(s, operatorValues);
         List<String> NumbersNewList = new ArrayList<>(Arrays.asList(numbers)); // המרה למערך List
 
-        return NumbersNewList; // מחזירים את הרשימה
+        return NumbersNewList;
+    }
+
+    public static List<String> BringFullList(String s) {
+        List<Double> operatorValues = Ex2Funcstion.giveOpValue(s);
+
+        String[] numbers = Ex2Funcstion.NumbersOnlyByOrder(s, operatorValues);
+        List<String> NumbersNewList = new ArrayList<>(Arrays.asList(numbers));
+
+        return NumbersNewList;
     }
 
     public static List<String> NumbersOnlyByOrderV2(String form) {
         if (form.startsWith("=")){
             form=form.substring(1);
         }
-        List<Double> Values = giveOpValue(form);
+        List<Double> Values =  giveOpValue(form);
         List<String> Numbers = new ArrayList<>();
         String num = "";
         for (int i = 0; i < Values.size(); i = i + 1) {
@@ -381,8 +393,7 @@ public class Ex2 {
                 Numbers.add(form.charAt(i) + "");
                 num = "";
             }
-        }
-        Numbers.add(num);
+        }Numbers.add(num);
         return Numbers;
     }
 
@@ -401,11 +412,12 @@ public class Ex2 {
         }
         try {
             int row = Integer.parseInt(DigitOfCell);
-          if( row >= 0 && row <= 99){
-              ans=true;
-        }} catch (NumberFormatException e) {
+            if( row >= 0 && row <= 99){
+                ans=true;
+            }} catch (NumberFormatException e) {
             return false;}
-            return ans;
-        }
+        return ans;
     }
+
+}
 

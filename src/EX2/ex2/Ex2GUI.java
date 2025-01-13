@@ -48,7 +48,7 @@ public class Ex2GUI {
 			int yy = StdDrawEx2.getYY(); // gets the y coordinate of the mouse click (-1 if none)
 			inputCell(xx,yy); 			 // if isIn(xx,yy) an input window will be opened to allow the user to edit cell (xx,yy);
 			StdDrawEx2.pause(Ex2Utils.WAIT_TIME_MS); // waits a few milliseconds - say 30 fps is sufficient.
-		}
+  		}
 	}
 	public static void save(String fileName){
 		try {
