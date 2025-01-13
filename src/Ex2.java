@@ -1,4 +1,5 @@
 import EX2.ex2.Ex2Funcstion;
+import EX2.ex2.SCell;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -245,6 +246,7 @@ public class Ex2 {
      */
     public static String calculateFormula(String form) {
         // 1. להפיק את הערכים של האופרטורים
+        form= SCell.NewFurmulaAfterChangeReferance(form);
         if(form.startsWith("=")){
             form=form.substring(1);
         }
@@ -367,6 +369,7 @@ public class Ex2 {
     }
 
     public static List<String> NumbersOnlyByOrderV2(String form) {
+
         if (form.startsWith("=")){
             form=form.substring(1);
         }

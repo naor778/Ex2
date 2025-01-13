@@ -18,7 +18,7 @@ public class SCell implements Cell {
     public SCell(int x, int y, String s) {
         this.x = x;
         this.y = y;
-        this._DataFirst = s;
+        this._DataFirst=s;
         setData(s); // Set the data after assigning the coordinates
         if (s == ERR_CYCLE || s == ERR_FORM || s == EMPTY_CELL) {
             setType(-1);
@@ -43,15 +43,15 @@ public class SCell implements Cell {
     @Override
     public void setData(String s) {
         // Add your code here
-        _DataFirst = s;
-        recalculateAllCells();
+        _DataFirst=s;
         this.type = determineCellType(s);  // Classify the type of data (text, number, formula)
         this.line = s;
+
         if (this.line.length() > 1 && this.type == 3) {
-            while (Ex2Funcstion.IsItCellCords(s) == true) {
+
+            while (Ex2Funcstion.IsItCellCords(s)==true) {
                 s = SCell.NewFurmulaAfterChangeReferance(s);
-            }
-            try {
+            } try {
                 this.line = Ex2Funcstion.calculateFormula(s);
             } catch (NumberFormatException e) {
                 this.type = ERR;
@@ -59,7 +59,7 @@ public class SCell implements Cell {
             }
         }
         System.out.println("Updating cell at [" + x + "][" + y + "] with value: " + this.line);
-        AllCell[x][y] = this.line;
+        AllCell[x][y]=this.line;
         AllCell2[x][y] = this._DataFirst;
         /////////////////////
     }
@@ -162,7 +162,6 @@ public class SCell implements Cell {
         }
         return ans;
     }
-
     public static String NewFurmulaAfterChangeReferance(String form) {
         if (form.startsWith("=")) {
             form = form.substring(1);
@@ -171,16 +170,21 @@ public class SCell implements Cell {
         List<String> ListOfFurmula = Ex2Funcstion.NumbersOnlyByOrderV2(form);
         for (int i = 0; i < ListOfFurmula.size(); i = i + 1) {
             while (Ex2Funcstion.IsItCellCords(ListOfFurmula.get(i)) == true) {
+
                 ListOfFurmula.set(i, getCellValueOf2D(ListOfFurmula.get(i)));
             }
+        }if (ListOfFurmula.get(0) == "("){
+            String resulte = String.join("(",ListOfFurmula);
+            return resulte;
+
         }
-        String resulte = String.join("", ListOfFurmula);
+        String resulte = String.join("",ListOfFurmula);
         return resulte;
     }
 
     public static int deapthOfCell(int x, int y) {
         int counter = 0;
-        if (AllCell[x][y] == null || AllCell[x][y].isEmpty()) {
+        if(AllCell[x][y]==null||AllCell[x][y].isEmpty()){
             return counter;
         }
         List<String> ListOfCell = Ex2Funcstion.NumbersOnlyByOrderV2(AllCell[x][y]);
@@ -195,17 +199,4 @@ public class SCell implements Cell {
         return counter;
     }
 
-    public static void recalculateAllCells() {
-        for (int i = 0; i < 25; i++) {
-            for (int j = 0; j < 99; j++) {
-                String ans = getCellReference(i, j);
-                AllCell[i][j] = ans;
-            }
-        }
-    }
-
-    public static String getCellReference(int x, int y) {
-        String ans = AllCell2[x][y];
-        return ans;
-    }
 }

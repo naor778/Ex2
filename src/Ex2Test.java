@@ -83,7 +83,7 @@ class Ex2Test {
         String[] try1 = {"2*16-8/4","(6+3)*2","6+6","2+2","2-2","2-0","8/4","2*6"};
         double[] ansOfTry1={30.0,18.0,12.0,4.0,0.0,2.0,2.0,12.0};
         for(int i=0;i< try1.length;i=i+1) {
-            assertEquals(ansOfTry1[i], Ex2.calculateFormula(try1[i]));
+            assertEquals(ansOfTry1[i]+"", Ex2.calculateFormula(try1[i])+"");
         }
     }
 

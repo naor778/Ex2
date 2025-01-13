@@ -237,6 +237,7 @@ public class Ex2Funcstion {
      * @return
      */
     public static String calculateFormula(String form) {
+        form=SCell.NewFurmulaAfterChangeReferance(form);
         if (form.startsWith("=")){
             form=form.substring(1);
         }
@@ -354,41 +355,17 @@ return ans;
         }
     }
 
-    /**
-     * Esy just used what i allready worked hard on in cuaculteform funcstion
-     *
-     * @param s
-     * @return
-     */
-    public static List<String> BringListOfAllNumbersAndCord(String s) {
-        List<Double> operatorValues = giveOpValue(s);
-
-        String[] numbers = NumbersOnlyByOrder(s, operatorValues);
-        List<String> NumbersNewList = new ArrayList<>(Arrays.asList(numbers)); // המרה למערך List
-
-        return NumbersNewList;
-    }
-
-    public static List<String> BringFullList(String s) {
-        List<Double> operatorValues = Ex2Funcstion.giveOpValue(s);
-
-        String[] numbers = Ex2Funcstion.NumbersOnlyByOrder(s, operatorValues);
-        List<String> NumbersNewList = new ArrayList<>(Arrays.asList(numbers));
-
-        return NumbersNewList;
-    }
-
     public static List<String> NumbersOnlyByOrderV2(String form) {
         if (form.startsWith("=")){
             form=form.substring(1);
         }
         List<Double> Values =  giveOpValue(form);
         List<String> Numbers = new ArrayList<>();
-        String num = "";
+        String num ="";
         for (int i = 0; i < Values.size(); i = i + 1) {
-            if (Values.get(i) == 0.0) {
+            if (Values.get(i) == 0.0||Values.get(i)==-1.0) {
                 num = num + form.charAt(i) + "";
-            } else if ("/*-+()".contains(form.charAt(i) + "") && i != 0 && num != "") {
+            } else if ("/*-+()".contains(form.charAt(i) + "") && i != 0 ) {
                 Numbers.add(num);
                 Numbers.add(form.charAt(i) + "");
                 num = "";
